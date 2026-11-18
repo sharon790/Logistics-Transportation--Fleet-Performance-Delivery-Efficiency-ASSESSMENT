@@ -5,4 +5,18 @@ I HAVE CONNECTED THE RELATIONSHIP AS 'MANY TO ONE'.
        FUEL EFFICIENCY = DIVIDE(SUM(Trip_Data[Distance_km]),SUM(Trip_Data[Fuel_Consumed_L]))
        ON-TIME DELIVERY = DIVIDE(CALCULATE(COUNTROWS(Trip_Data),Trip_Data[Delivery_Status]="On-Time"),COUNTROWS(Trip_Data))
 TO FINDING THE COST PER KM AS PER GIVEN DATA FUEL COST + MAINTENANCE COST  BUT THE DATASET DOES NOT HAVE  'FUEL COST' IT HAS ONLY FUEL CONSUMED AND THE PRICE PER LITER IS NOT MENTIONED SO I THINK THERE IS NO WAY TO CALCULATE    
-    THOUGH I DID A MEASURE WHICH IS INVALID               {  COST PER KM = DIVIDE(SUM(Trip_Data[Fuel_Consumed_L])+SUM(Vehicle_Master[Maintenance_Cost]),SUM(Trip_Data[Distance_km]))  }
+    THOUGH I DID A MEASURE WHICH IS INVALID     {  COST PER KM = DIVIDE(SUM(Trip_Data[Fuel_Consumed_L])*95+SUM(Vehicle_Master[Maintenance_Cost]),SUM(Trip_Data[Distance_km]))  }
+CHARTS 
+BAR CHART : SINCE I HAVEV TO CONNECT ON TIME PERCENTAGE TO ROUTE SO I CREATED A COLUMN NAMES AS 'ROUTE' { ROUTE = Trip_Data[Origin] &" -" & Trip_Data[Destination] }
+LINE CHART : SINCE IT SHOULD BE DIVIDED BY THE MONTH I CREATED A 'CALENDAR'
+                                                                CALENDAR = CALENDAR(MIN(Trip_Data[Delivery_Date]),MAX(Trip_Data[Delivery_Date]))
+                                                                MONTH = FORMAT('CALENDAR'[Date],"MMMM")
+                                                                MONTH NUMBER = MONTH('CALENDAR'[Date].[Date])
+                                                                YEAR MONTH = FORMAT('CALENDAR'[Date],"YYYY-MMMM")
+MAP :SINCE I HAVE A MAP ON REGARDS OF ROUTE : I CREATED A MEASURE OF LATE TRIPS
+                                              LATE TRIPS = CALCULATE(COUNTROWS(Trip_Data),Trip_Data[Delivery_Status]="Late")
+KPI CARDS : THE INSTRUCTION WAS TO ADD AVERAGE DELIVERY TIME BUT SINCE THERE WAS NO PICKUP TIME AND DROP TIME IT IS IMPOSSIBLE TO CREATE A AVERAGE
+
+DASHBOARD 
+I CREATED THE DASHBOARD WITH SOME OF MY IDEA WHICH DISPLAYS LATE DELIVERIES AND ON TIME THEN COST PER KM
+SLICERS OF DATE, VEHICLE TYPE ,ORGIN, DESTINATION
